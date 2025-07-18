@@ -1,4 +1,6 @@
-// select the carousel section
+// ==========================
+// 1. DOM SELECTORS & ARRAYS
+// ==========================
 const carousel = document.querySelector('.carousel')
 // select the buttons in the carousel section
 const previousButton = carousel.querySelector('.previous-button')
@@ -7,7 +9,23 @@ const nextButton = carousel.querySelector('.next-button')
 const contents = carousel.querySelector('.carousel__contents')
 //select the dots container to updat the dots state
 const dotsContainer = carousel.querySelector('.carousel__dots')
+//select the dots, create an array of dots
+const dots = Array.from(carousel.querySelectorAll('.carousel__dot'))
+// find the slide on the dom
+const slides = Array.from(carousel.querySelectorAll('.carousel__slide'))
+//find the width of one slide
+const slideWidth = slides[0].getBoundingClientRect().width
 
+// ==========================
+// 2. POSITION THE SLIDES
+// ==========================
+slides.forEach((slide, index) => {
+    slide.style.left = slideWidth * index + 'px'
+})
+
+// ==========================
+// 3. BUTTON EVENT HANDLERS
+// ==========================
 
 // make the next button clickable
 nextButton.addEventListener('click', e => {
@@ -39,12 +57,11 @@ nextButton.addEventListener('click', e => {
     const nextDot = currentDot.nextElementSibling
     //remove class is-selected from the current dot
     currentDot.classList.remove('is_selected')
-    //add class is-selcted to the next dot
+    //add class is-selected to the next dot
     nextDot.classList.add('is-selected')
 })
 
 //make the previous button clickable
-
 previousButton.addEventListener('click', e => {
     //select the current slide
     const currentSlide = contents.querySelector('.is-selected')
@@ -79,11 +96,9 @@ previousButton.addEventListener('click', e => {
 
 })
 
-// Dots
-//select the dots, create an array of dots
-const dots = Array.from(carousel.querySelectorAll('.carousel__dot'))
-// find the slide on the dom
-const slides = Array.from(carousel.querySelectorAll('.carousel__slide'))
+// ==========================
+// 4. DOT EVENT HANDLERS
+// ==========================
 
 // FIND THE DOT //
 //  loop over the dots array
@@ -93,11 +108,6 @@ const slides = Array.from(carousel.querySelectorAll('.carousel__slide'))
 //
 dots.forEach(dot => {
     dot.addEventListener('click', e => {
-        // if (dots[0] === dot ) {
-        //     console.log('clicked first dot')
-        // } else {
-        //     console.log('clicked another dot')
-        // }
         let clickedDotIndex
 
         for (let index = 0; index < dots.length; index++) {
@@ -105,15 +115,12 @@ dots.forEach(dot => {
                 clickedDotIndex = index
             } 
         }
-        // console.log(clickeddotindex)
 
         // find the slide using the index (i.e. clickedDotIndex)
         const slideToShow = slides[clickedDotIndex]
-        // console.log(slideToShow)
 
         // get the slides position using getComputedStyle
         const destination = getComputedStyle(slideToShow).left
-        // console.log(destination)
 
         // show the slide by changing the .carousel__content's left position
         contents.style.left = '-' + destination
@@ -131,9 +138,7 @@ dots.forEach(dot => {
         if(clickedDotIndex === 0) {
             previousButton.setAttribute('hidden', true)
             nextButton.removeAttribute('hidden')
-        } //else if (clickedDotIndex === 2) // 
-            else if (clickedDotIndex === dots.length -1) //so it works with any number of dots
-            {
+        } else if (clickedDotIndex === dots.length -1) {
             previousButton.removeAttribute('hidden')
             nextButton.setAttribute('hidden', true)
         } else {
@@ -141,25 +146,4 @@ dots.forEach(dot => {
             nextButton.removeAttribute('hidden')
         }
     })
-})
-
-//POSITION THE SLIDES
-
-//find the width of one slide
-// const rect = slides[0].getBoundingClientRect()
-// const slideWidth = rect.width
-// console.log(slideWidth)
-
-//shorten the code above
-const slideWidth = slides[0].getBoundingClientRect().width
-
-//position the slides, make the calculations consistent
-// slides[0].style.left = slideWidth * 0 + 'px'
-// slides[1].style.left = slideWidth * 1 + 'px'
-// slides[2].style.left = slideWidth * 2 + 'px'
-
-//use the index of each slide to calcultate the correct left value
-//use a forEach loop
-slides.forEach((slide, index) => {
-    slide.style.left = slideWidth * index + 'px'
 })

@@ -29,17 +29,13 @@ slides.forEach((slide, index) => {
 
 // make the next button clickable
 nextButton.addEventListener('click', e => {
-    // select the current slide
     const currentSlide = contents.querySelector('.is-selected')
-    // select the next slide
     const nextSlide = currentSlide.nextElementSibling
-    // get the next slide's location
     const destination = getComputedStyle(nextSlide).left
-    // use the destination value to set the left property
-    contents.style.left = '-' + destination
-    //remove is-selected from the current slide
+   
+    //Shows next slide
+    contents.style.transform = 'translateX(-' + destination + ')'
     currentSlide.classList.remove('is-selected')
-    //add is-selected to the next slide
     nextSlide.classList.add('is-selected')
 
     // show previous button
@@ -50,14 +46,10 @@ nextButton.addEventListener('click', e => {
         nextButton.setAttribute('hidden', true)
     }
 
-    //update the dot state when clicking buttons
-    //find the current dot
+    //Highlight dot
     const currentDot = dotsContainer.querySelector('.is-selected')
-    //find the next dot
     const nextDot = currentDot.nextElementSibling
-    //remove class is-selected from the current dot
     currentDot.classList.remove('is-selected')
-    //add class is-selected to the next dot
     nextDot.classList.add('is-selected')
 })
 
@@ -68,7 +60,7 @@ previousButton.addEventListener('click', e => {
     const destination = getComputedStyle(previousSlide).left
     
     // shows previous slide
-    contents.style.left = '-' + destination
+    contents.style.transform = 'translateX(-' + destination + ')'
     currentSlide.classList.remove('is-selected')
     previousSlide.classList.add('is-selected')
 

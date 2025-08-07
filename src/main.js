@@ -10,13 +10,41 @@ const dots = [...carousel.querySelectorAll('.carousel__dot')]  //use arry spread
 const slides = [...carousel.querySelectorAll('.carousel__slide')] //use array spread
 
 // ==========================
-// 2. POSITION THE SLIDES
+// 2. Functions
 // ==========================
-//find the width of one slide
-const slideWidth = slides[0].getBoundingClientRect().width
-slides.forEach((slide, index) => {
-    slide.style.left = `${slideWidth * index}px` //update with template literal
+/**
+ * Set slide positions
+ */
+function setSlidePositions() {
+  const slideWidth = slides[0].getBoundingClientRect().width
+  slides.forEach((slide, index) => {
+    slide.style.left = `${slideWidth * index}px` 
 })
+}
+//Call the function
+setSlidePositions()
+
+/**
+ * Switches slides
+ * @params {HTMLElement} currentSlide
+ * @params {HTMLElement} targetSlide
+ */
+function switchSlide(currentSlide, targetSlide) {
+  const destination = getComputedStyle(targetSlide).left
+  contents.style.transform = `translateX(-${destination})` 
+  currentSlide.classList.remove('is-selected')
+  targetSlide.classList.add('is-selected')
+}
+
+/**
+ * Highlights selected dots
+ * @params {HTMLElement} currentDot
+ * @params {HTMLElement} targetDot
+ */
+function highlightDot(currentDot, targetDot) {
+  currentDot.classList.remove('is-selected')
+  targetDot.classList.add('is-selected')
+}
 
 // ==========================
 // 3. BUTTON EVENT HANDLERS
@@ -26,12 +54,11 @@ slides.forEach((slide, index) => {
 nextButton.addEventListener('click', e => {
   const currentSlide = contents.querySelector('.is-selected')
   const nextSlide = currentSlide.nextElementSibling
-  const destination = getComputedStyle(nextSlide).left
+  const currentDot = dotsContainer.querySelector('.is-selected')
+  const nextDot = currentDot.nextElementSibling
   
-  //Shows next slide
-  contents.style.transform = `translateX(-${destination})` //update with template literal
-  currentSlide.classList.remove('is-selected')
-  nextSlide.classList.add('is-selected')
+  switchSlide(currentSlide, nextSlide)
+  highlightDot(currentDot, nextDot)
 
   // show previous button
   previousButton.removeAttribute('hidden')
@@ -40,24 +67,17 @@ nextButton.addEventListener('click', e => {
   if(!nextSlide.nextElementSibling) {
       nextButton.setAttribute('hidden', true)
   }
-
-  //Highlight dot
-  const currentDot = dotsContainer.querySelector('.is-selected')
-  const nextDot = currentDot.nextElementSibling
-  currentDot.classList.remove('is-selected')
-  nextDot.classList.add('is-selected')
 })
 
 //make the previous button clickable
 previousButton.addEventListener('click', e => {
   const currentSlide = contents.querySelector('.is-selected')
   const previousSlide = currentSlide.previousElementSibling
-  const destination = getComputedStyle(previousSlide).left
-  
-  // shows previous slide
-  contents.style.transform = `translateX(-${destination})` //update with template literal
-  currentSlide.classList.remove('is-selected')
-  previousSlide.classList.add('is-selected')
+  const currentDot = dotsContainer.querySelector('.is-selected')
+  const previousDot = currentDot.previousElementSibling
+
+  switchSlide(currentSlide, previousSlide)
+  highlightDot(currentDot, previousDot)
 
   // show the next button
   nextButton.removeAttribute('hidden')
@@ -66,12 +86,6 @@ previousButton.addEventListener('click', e => {
   if(!previousSlide.previousElementSibling) {
       previousButton.setAttribute('hidden', true)
   }
-
-  //Highlight dot
-  const currentDot = dotsContainer.querySelector('.is-selected')
-  const previousDot = currentDot.previousElementSibling
-  currentDot.classList.remove('is-selected')
-  previousDot.classList.add('is-selected')
 })
 
 // ==========================

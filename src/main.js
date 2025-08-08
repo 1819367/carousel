@@ -6,8 +6,8 @@ const previousButton = carousel.querySelector('.previous-button')
 const nextButton = carousel.querySelector('.next-button')
 const contents = carousel.querySelector('.carousel__contents')
 const dotsContainer = carousel.querySelector('.carousel__dots')
-const dots = [...carousel.querySelectorAll('.carousel__dot')]  //use arry spread
-const slides = [...carousel.querySelectorAll('.carousel__slide')] //use array spread
+const dots = [...carousel.querySelectorAll('.carousel__dot')] 
+const slides = [...carousel.querySelectorAll('.carousel__slide')] 
 
 // ==========================
 // 2. Functions
@@ -44,6 +44,23 @@ function switchSlide(currentSlide, targetSlide) {
 function highlightDot(currentDot, targetDot) {
   currentDot.classList.remove('is-selected')
   targetDot.classList.add('is-selected')
+}
+
+/**
+ * Show and hide arrow buttons
+ * @param {number} targetsSlideIndex
+ */
+function showHideArrowButtons (clickedDotIndex) {
+   if (clickedDotIndex === 0) {
+    previousButton.setAttribute('hidden', true)
+    nextButton.removeAttribute('hidden')
+  } else if (clickedDotIndex === dots.length - 1) {
+    previousButton.removeAttribute('hidden')
+    nextButton.setAttribute('hidden', true)
+  } else {
+    previousButton.removeAttribute('hidden')
+    nextButton.removeAttribute('hidden')
+  }
 }
 
 // ==========================
@@ -94,32 +111,15 @@ previousButton.addEventListener('click', e => {
 
 dotsContainer.addEventListener('click', event => {
   const dot = event.target.closest('button')
-  if (!dot) return //use early return
+  if (!dot) return 
 
-  // Use findIndex directly and only once:
+  // Show Slide
+  const currentSlide = contents.querySelector('.is-selected') //find current slide
+  const currentDots = dotsContainer.querySelector('.is-selected') //find the current dot
   const clickedDotIndex = dots.findIndex(d => d === dot);
-
-  // Show slide
   const slideToShow = slides[clickedDotIndex]
-  const destination = getComputedStyle(slideToShow).left
 
-  contents.style.transform = `translateX(-${destination})`  //update with transform & template literals
-  slides.forEach(slide => { slide.classList.remove('is-selected') })
-  slideToShow.classList.add('is-selected')
-
-  // Highlight dot
-  dots.forEach(d => { d.classList.remove('is-selected') })
-  dot.classList.add('is-selected')
-
-  // Show / hide buttons
-  if (clickedDotIndex === 0) {
-    previousButton.setAttribute('hidden', true)
-    nextButton.removeAttribute('hidden')
-  } else if (clickedDotIndex === dots.length - 1) {
-    previousButton.removeAttribute('hidden')
-    nextButton.setAttribute('hidden', true)
-  } else {
-    previousButton.removeAttribute('hidden')
-    nextButton.removeAttribute('hidden')
-  }
+  switchSlide(currentSlide, slideToShow)
+  highlightDot(currentDots, dot)
+  showHideArrowButtons(clickedDotIndex)
 })

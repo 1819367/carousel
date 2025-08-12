@@ -50,11 +50,11 @@ function highlightDot(currentDot, targetDot) {
  * Show and hide arrow buttons
  * @param {number} targetsSlideIndex
  */
-function showHideArrowButtons (clickedDotIndex) {
-   if (clickedDotIndex === 0) {
+function showHideArrowButtons (targetSlideIndex) {
+   if (targetSlideIndex === 0) {
     previousButton.setAttribute('hidden', true)
     nextButton.removeAttribute('hidden')
-  } else if (clickedDotIndex === dots.length - 1) {
+  } else if (targetSlideIndex === dots.length - 1) {
     previousButton.removeAttribute('hidden')
     nextButton.setAttribute('hidden', true)
   } else {
@@ -64,45 +64,34 @@ function showHideArrowButtons (clickedDotIndex) {
 }
 
 // ==========================
-// 3. BUTTON EVENT HANDLERS
+// 3. ARROW BUTTON EVENT HANDLERS
 // ==========================
 
 // make the next button clickable
 nextButton.addEventListener('click', e => {
   const currentSlide = contents.querySelector('.is-selected')
   const nextSlide = currentSlide.nextElementSibling
+  const nextSlideIndex = slides.findIndex((slide => slide === nextSlide))
   const currentDot = dotsContainer.querySelector('.is-selected')
   const nextDot = currentDot.nextElementSibling
   
   switchSlide(currentSlide, nextSlide)
   highlightDot(currentDot, nextDot)
-
-  // show previous button
-  previousButton.removeAttribute('hidden')
-
-  // hides next button
-  if(!nextSlide.nextElementSibling) {
-      nextButton.setAttribute('hidden', true)
-  }
+  showHideArrowButtons(nextSlideIndex)
 })
 
 //make the previous button clickable
 previousButton.addEventListener('click', e => {
   const currentSlide = contents.querySelector('.is-selected')
   const previousSlide = currentSlide.previousElementSibling
+  const previousSlideIndex = slides.findIndex((slide => slide === previousSlide))
   const currentDot = dotsContainer.querySelector('.is-selected')
   const previousDot = currentDot.previousElementSibling
+ 
 
   switchSlide(currentSlide, previousSlide)
   highlightDot(currentDot, previousDot)
-
-  // show the next button
-  nextButton.removeAttribute('hidden')
-  
-  // hides previous button
-  if(!previousSlide.previousElementSibling) {
-      previousButton.setAttribute('hidden', true)
-  }
+  showHideArrowButtons(previousSlideIndex)
 })
 
 // ==========================

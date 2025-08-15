@@ -5,13 +5,35 @@ const carousel = document.querySelector('.carousel')
 const previousButton = carousel.querySelector('.previous-button')
 const nextButton = carousel.querySelector('.next-button')
 const contents = carousel.querySelector('.carousel__contents')
-const dotsContainer = carousel.querySelector('.carousel__dots')
-const dots = [...carousel.querySelectorAll('.carousel__dot')] 
 const slides = [...carousel.querySelectorAll('.carousel__slide')] 
+const dotsContainer = createDots(slides)
+carousel.appendChild(dotsContainer) //append dotsContainer to the the parent element
+const dots = [...dotsContainer.children]
+
 
 // ==========================
 // 2. Functions
 // ==========================
+
+/**Create dots for the carousel
+ * @returns The HTML for dots
+ */
+function createDots() {
+  const dotsContainer = document.createElement('div')
+  dotsContainer.classList.add('carousel__dots')
+
+  slides.forEach(slide => {
+    const dot = document.createElement('button')
+    dot.classList.add('carousel__dot')
+
+    if (slide.classList.contains('is-selected')) {
+      dot.classList.add('is-selected')
+    }
+    dotsContainer.appendChild(dot)    
+  })
+  return dotsContainer //this lets us use dotsContainer anywhere we need to
+}
+
 /**
  * Set slide positions
  */
@@ -59,7 +81,7 @@ function highlightDot(currentSlideIndex, targetSlideIndex) {
 function showHideArrowButtons (targetSlideIndex) {
    if (targetSlideIndex === 0) {
     previousButton.setAttribute('hidden', true)
-    nextButton.removeAttribute('hidden')
+    nextButton.removeAttribute('hidden') 
   } else if (targetSlideIndex === dots.length - 1) {
     previousButton.removeAttribute('hidden')
     nextButton.setAttribute('hidden', true)
@@ -87,9 +109,9 @@ nextButton.addEventListener('click', e => {
   const currentSlideIndex = getCurrentSlideIndex()
   const nextSlideIndex = currentSlideIndex + 1 //find nextSlideIndex using currentSlideIndex
 
-  const currentDot = dotsContainer.querySelector('.is-selected')
-  const nextDot = currentDot.nextElementSibling
-  
+  const currentDot = dotsContainer.querySelector('.is-selected') 
+  const nextDot = currentDot.nextElementSibling 
+
   switchSlide(currentSlideIndex, nextSlideIndex)
   highlightDot(currentSlideIndex, nextSlideIndex)
   showHideArrowButtons(nextSlideIndex)

@@ -10,17 +10,16 @@
 
     <!-- stylesheet -->
      <link rel="stylesheet" href="src/style.css">
-
-     <script type="module" src="src/main.js"></script> 
   </head>
   <body>
     <section class="carousel">
+      <!-- previous button -->
       <button class="carousel__button previous-button" hidden>
         <svg id="left" viewBox="0 0 54 69.007">
            <path d="M47 0L3.44 34.502 47 69.007z" />
         </svg>
       </button>
-
+      <!-- slide container -->
       <div class="carousel__contents-container">
         <ul class="carousel__contents">
           <!-- first slide -->
@@ -43,19 +42,13 @@
           </li>
         </ul>
       </div>
-      
+      <!-- next button -->
       <button class="carousel__button next-button">
         <svg viewBox="0 0 54 69.007">
           <path d="M5-.121l43.56 34.502L5 68.886z"/>
         </svg>
       </button>
-
-      <div class="carousel__dots">
-        <button class="carousel__dot is-selected"></button>
-        <button class="carousel__dot"></button>
-        <button class="carousel__dot"></button>
-      </div>
     </section>
-    
+    <script type="module" src="src/main.js"></script> 
   </body>
 </html>
